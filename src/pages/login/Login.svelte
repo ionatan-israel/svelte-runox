@@ -1,19 +1,24 @@
 <script lang="ts">
   import Button from "../../shared/Button.svelte";
   import Card from "../../shared/Card.svelte";
-  import Chat from '../../components/chat/Chat.svelte';
+  import Chat from "../../components/chat/Chat.svelte";
   import PlayerList from "../../shared/PlayerList.svelte";
   import { store } from "../../store";
   import { AppStatus } from "../../store/types";
-  import { handleRoomName, login } from "./handlers";
+  import { handleRoomName, login, logout, handleFixRoom } from "./handlers";
 
-  const players = [];
+  // https://svelte.dev/tutorial/updating-arrays-and-objects
+  let players = [];
 
   // [Declaraciones reactivas]
   $: isAuthenticated = $store.status === AppStatus.AUTHENTICATED;
 
-  $: if (isAuthenticated) {
-    players.push({ name: $store.user.name, pic: $store.user.pic });
+  $: if (isAuthenticated && players.length === 0) {
+    players = [...players, { name: $store.user.name, pic: $store.user.pic }];
+  }
+
+  $: if (players.length > 0 && $store.user === null) {
+    players = [];
   }
 </script>
 
@@ -31,12 +36,27 @@
     text-transform: uppercase;
     width: 50%;
   }
+  .logout {
+    float: right;
+    height: 100%;
+    max-width: 80px;
+    width: 80;
+  }
+  .logout button {
+    background-color: khaki;
+    border: 1px black;
+  }
 </style>
 
 <template>
   <!-- Todo: Login -->
 
-  {#if isAuthenticated}<Chat />{/if}
+  {#if isAuthenticated}
+    <Chat />
+    <div class="logout">
+      <button on:click={() => logout(store)}>logout</button>
+    </div>
+  {/if}
 
   <div class="login-page">
     <Card>
@@ -54,9 +74,10 @@
           <h1 class="text-2xl font-semibold uppercase">{$store.roomName}</h1>
         {/if}
 
-        {#if isAuthenticated}
+        {#if isAuthenticated && !$store.hasRoomNameFixed}
           <input
             value={$store.roomName}
+            on:keyup={(e) => handleFixRoom(e.key)}
             on:input={(e) => handleRoomName(store, e.target.value)}
             class="input-room"
             placeholder="Room name here..."
