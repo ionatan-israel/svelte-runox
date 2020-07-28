@@ -1,3 +1,6 @@
+# RunoxSvelte
+![RunoxSvelte](https://raw.githubusercontent.com/ionatan-israel/svelte-runox/master/public/assets/images/RunoxSvelte.png)
+
 *Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
 
 ---
