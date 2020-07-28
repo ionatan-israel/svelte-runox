@@ -80,6 +80,6 @@
   <div class="rnx-avatar_container">
     <img src={image} alt="name" class="rnx-avatar_image" />
 
-    <div class="rnx-avatar_badge">{badge}</div>
+    {#if badge}<div class="rnx-avatar_badge">{badge}</div>{/if}
   </div>
 </div>
