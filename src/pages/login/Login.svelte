@@ -7,7 +7,13 @@
   import { handleRoomName, login } from "./handlers";
 
   const players = [];
+
+  // [Declaraciones reactivas]
   $: isAuthenticated = $store.status === AppStatus.AUTHENTICATED;
+
+  $: if (isAuthenticated) {
+    players.push({ name: $store.user.name, pic: $store.user.pic });
+  }
 </script>
 
 <style>
@@ -46,6 +52,7 @@
 
         {#if isAuthenticated}
           <input
+            value={$store.roomName}
             on:input={(e) => handleRoomName(store, e.target.value)}
             class="input-room"
             placeholder="Room name here..."
@@ -63,8 +70,6 @@
             <Button>LOGIN & CREATE ROOM!</Button>
           </div>
         {/if}
-
-        <!-- <h2>{$store.user?.name}</h2> -->
 
         <!--
         <div on:click={() => store.reset()} class='mt-6'>
