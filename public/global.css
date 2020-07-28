@@ -1,66 +1,42 @@
-html, body {
-	position: relative;
-	width: 100%;
-	height: 100%;
+* {
+  box-sizing: border-box;
+  user-select: none !important;
+}
+
+input,
+textarea,
+.text-selectable {
+  user-select: text !important;
 }
 
 body {
-	color: #333;
-	margin: 0;
-	padding: 8px;
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  background: url(assets/images/main-bg.jpg) no-repeat center;
+  background-size: cover;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
 }
 
-a {
-	color: rgb(0,100,200);
-	text-decoration: none;
+input {
+  background-color: #111;
+  border: 0.12rem solid #111;
+  border-radius: 0.5rem;
+  padding: 0.63rem 1rem;
+  outline: 0;
+  color: #FFF;
 }
 
-a:hover {
-	text-decoration: underline;
+input:focus {
+  border: 0.12rem solid #2d3748;
 }
 
-a:visited {
-	color: rgb(0,80,160);
+input::placeholder {
+  color: #1a202c;
 }
 
-label {
-	display: block;
-}
-
-input, button, select, textarea {
-	font-family: inherit;
-	font-size: inherit;
-	padding: 0.4em;
-	margin: 0 0 0.5em 0;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 2px;
-}
-
-input:disabled {
-	color: #ccc;
-}
-
-input[type="range"] {
-	height: 0;
-}
-
-button {
-	color: #333;
-	background-color: #f4f4f4;
-	outline: none;
-}
-
-button:disabled {
-	color: #999;
-}
-
-button:not(:disabled):active {
-	background-color: #ddd;
-}
-
-button:focus {
-	border-color: #666;
+.missing {
+  color: white;
 }
