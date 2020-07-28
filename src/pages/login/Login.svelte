@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "../../shared/Button.svelte";
   import Card from "../../shared/Card.svelte";
+  import Chat from '../../components/chat/Chat.svelte';
   import PlayerList from "../../shared/PlayerList.svelte";
   import { store } from "../../store";
   import { AppStatus } from "../../store/types";
@@ -34,6 +35,9 @@
 
 <template>
   <!-- Todo: Login -->
+
+  {#if isAuthenticated}<Chat />{/if}
+
   <div class="login-page">
     <Card>
 
@@ -71,11 +75,6 @@
           </div>
         {/if}
 
-        <!--
-        <div on:click={() => store.reset()} class='mt-6'>
-        <Button>RESET!</Button>
-        </div>
-      -->
       </div>
 
       <!-- Footer -->
@@ -91,13 +90,3 @@
   </div>
 
 </template>
-
-<!-- // const players = [
-  //   {
-  //     name: "Jonatan Rodríguez",
-  //     pic:
-  //       "https://pbs.twimg.com/profile_images/1124022231661723648/9vBMdvSb_400x400.jpg",
-  //     badge: 4,
-  //     active: false,
-  //   },
-  // ]; -->
