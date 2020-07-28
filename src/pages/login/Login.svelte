@@ -7,6 +7,7 @@
   import { AppStatus } from "../../store/types";
   import { handleRoomName, login, logout, handleFixRoom } from "./handlers";
 
+  let showChat: boolean = true;
   let inputRoom: any;
 
   // https://svelte.dev/tutorial/updating-arrays-and-objects
@@ -14,9 +15,15 @@
 
   // [Declaraciones reactivas]
   $: isAuthenticated = $store.status === AppStatus.AUTHENTICATED;
-  $: if (isAuthenticated && !$store.hasRoomNameFixed && inputRoom) { inputRoom.focus(); }
-  $: if (isAuthenticated && players.length === 0) { players = [...players, { name: $store.user.name, pic: $store.user.pic }]; }
-  $: if (players.length > 0 && $store.user === null) { players = []; }
+  $: if (isAuthenticated && !$store.hasRoomNameFixed && inputRoom) {
+    inputRoom.focus();
+  }
+  $: if (isAuthenticated && players.length === 0) {
+    players = [...players, { name: $store.user.name, pic: $store.user.pic }];
+  }
+  $: if (players.length > 0 && $store.user === null) {
+    players = [];
+  }
 </script>
 
 <style>
@@ -36,12 +43,18 @@
   .logout {
     float: right;
     height: 100%;
+    margin: 0.2rem 0.5rem 0.2rem;
     max-width: 80px;
-    width: 80;
+    width: 80px;
   }
   .logout button {
-    background-color: khaki;
-    border: 1px black;
+    margin-bottom: 0.4rem;
+    font-size: medium;
+    color: #f2f2f2;
+    background-color: #181818;
+    border: 1px solid #181818;
+    border-radius: 4px;
+    padding: 0.2rem;
   }
   /* .waiting {
     margin-top: 2rem;
@@ -52,9 +65,18 @@
   <!-- Todo: Login -->
 
   {#if isAuthenticated}
-    <Chat />
+    {#if showChat === true}
+      <Chat />
+    {/if}
+
     <div class="logout">
       <button on:click={() => logout(store)}>logout</button>
+      <button
+        on:click={() => {
+          showChat = !showChat;
+        }}>
+        chat
+      </button>
     </div>
   {/if}
 
@@ -71,7 +93,11 @@
         <div class="opacity-75 text-sm">SALA</div>
 
         {#if $store.roomName?.length > 0}
-          <h1 on:dblclick={() => store.setHasRoomNameFixed(false)} class="text-2xl font-semibold uppercase">{$store.roomName}</h1>
+          <h1
+            on:dblclick={() => store.setHasRoomNameFixed(false)}
+            class="text-2xl font-semibold uppercase">
+            {$store.roomName}
+          </h1>
         {/if}
 
         {#if !isAuthenticated}
@@ -88,11 +114,19 @@
             placeholder="Room name here..."
             type="text" />
 
-          <div class="mt-6" on:click={() => { console.log('crear'); }}>
+          <div
+            class="mt-6"
+            on:click={() => {
+              console.log('crear');
+            }}>
             <Button>CREATE ROOM!</Button>
           </div>
         {:else}
-          <div class="mt-6" on:click={() => { console.log('start the game!'); }}>
+          <div
+            class="mt-6"
+            on:click={() => {
+              console.log('start the game!');
+            }}>
             <Button>START THE GAME!</Button>
           </div>
 
