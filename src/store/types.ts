@@ -8,6 +8,7 @@ export enum AppStatus {
 }
 
 export interface IState {
+  hasRoomNameFixed: boolean;
   isOwner: boolean,
   roomName: string | null,
   status: AppStatus;
@@ -16,6 +17,7 @@ export interface IState {
 
 export interface IStore {
   subscribe: any,
+  setHasRoomNameFixed: (hasRoomNameFixed: boolean) => void,
   setIsOwner: (isOwners: boolean) => void,
   setRoomName: (roomName: string) => void,
   setStatus: (status: AppStatus) => void,
