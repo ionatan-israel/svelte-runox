@@ -78,20 +78,19 @@
           <input
             value={$store.roomName}
             on:keyup={(e) => handleFixRoom(e.key)}
-            on:input={(e) => handleRoomName(store, e.target.value)}
+            on:input={(e) => handleRoomName(e.target.value)}
             class="input-room"
             placeholder="Room name here..."
             type="text" />
 
           <div
-            on:click={() => {
-              console.log('crear');
-            }}
+            on:click={() => { console.log('crear'); }}
             class="mt-6">
             <Button>CREATE ROOM!</Button>
           </div>
+
         {:else}
-          <div on:click={() => login(store)} class="mt-6">
+          <div on:click={login} class="mt-6">
             <Button>LOGIN & CREATE ROOM!</Button>
           </div>
         {/if}
