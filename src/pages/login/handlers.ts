@@ -18,7 +18,6 @@ export const login = async () => {
   } catch (err) {
     console.log(err);
   }
-
 };
 
 export const handleRoomName = (roomName: string) => {
@@ -26,7 +25,7 @@ export const handleRoomName = (roomName: string) => {
 }
 
 export const handleFixRoom = (key: string) => {
-  if (key === 'Enter') {
+  if (key === 'Enter' || key === 'Escape') {
     store.setHasRoomNameFixed(true);
   }
 }

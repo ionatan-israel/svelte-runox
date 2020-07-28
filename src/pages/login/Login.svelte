@@ -7,19 +7,16 @@
   import { AppStatus } from "../../store/types";
   import { handleRoomName, login, logout, handleFixRoom } from "./handlers";
 
+  let inputRoom: any;
+
   // https://svelte.dev/tutorial/updating-arrays-and-objects
   let players = [];
 
   // [Declaraciones reactivas]
   $: isAuthenticated = $store.status === AppStatus.AUTHENTICATED;
-
-  $: if (isAuthenticated && players.length === 0) {
-    players = [...players, { name: $store.user.name, pic: $store.user.pic }];
-  }
-
-  $: if (players.length > 0 && $store.user === null) {
-    players = [];
-  }
+  $: if (isAuthenticated && !$store.hasRoomNameFixed && inputRoom) { inputRoom.focus(); }
+  $: if (isAuthenticated && players.length === 0) { players = [...players, { name: $store.user.name, pic: $store.user.pic }]; }
+  $: if (players.length > 0 && $store.user === null) { players = []; }
 </script>
 
 <style>
@@ -46,6 +43,9 @@
     background-color: khaki;
     border: 1px black;
   }
+  /* .waiting {
+    margin-top: 2rem;
+  } */
 </style>
 
 <template>
@@ -71,11 +71,16 @@
         <div class="opacity-75 text-sm">SALA</div>
 
         {#if $store.roomName?.length > 0}
-          <h1 class="text-2xl font-semibold uppercase">{$store.roomName}</h1>
+          <h1 on:dblclick={() => store.setHasRoomNameFixed(false)} class="text-2xl font-semibold uppercase">{$store.roomName}</h1>
         {/if}
 
-        {#if isAuthenticated && !$store.hasRoomNameFixed}
+        {#if !isAuthenticated}
+          <div on:click={login} class="mt-6">
+            <Button>LOGIN & CREATE ROOM!</Button>
+          </div>
+        {:else if !$store.hasRoomNameFixed}
           <input
+            bind:this={inputRoom}
             value={$store.roomName}
             on:keyup={(e) => handleFixRoom(e.key)}
             on:input={(e) => handleRoomName(e.target.value)}
@@ -83,16 +88,17 @@
             placeholder="Room name here..."
             type="text" />
 
-          <div
-            on:click={() => { console.log('crear'); }}
-            class="mt-6">
+          <div class="mt-6" on:click={() => { console.log('crear'); }}>
             <Button>CREATE ROOM!</Button>
           </div>
-
         {:else}
-          <div on:click={login} class="mt-6">
-            <Button>LOGIN & CREATE ROOM!</Button>
+          <div class="mt-6" on:click={() => { console.log('start the game!'); }}>
+            <Button>START THE GAME!</Button>
           </div>
+
+          <!-- <div class="waiting px-4 text-2xl text-red-700 font-semibold">
+            WAITING FOR THE OWNER TO START THE GAME
+          </div> -->
         {/if}
 
       </div>
