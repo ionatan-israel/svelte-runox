@@ -1,11 +1,18 @@
 <script lang="ts">
+  import Chat from "../../components/chat/Chat.svelte";
   import Button from "../../shared/Button.svelte";
   import Card from "../../shared/Card.svelte";
-  import Chat from "../../components/chat/Chat.svelte";
   import PlayerList from "../../shared/PlayerList.svelte";
   import { store } from "../../store";
   import { AppStatus } from "../../store/types";
-  import { handleRoomName, login, logout, handleFixRoom } from "./handlers";
+  import {
+    createRoom,
+    handleFixRoom,
+    handleRoomName,
+    login,
+    logout,
+    startGame,
+  } from "./handlers";
 
   let showChat: boolean = true;
   let inputRoom: any;
@@ -70,7 +77,7 @@
     {/if}
 
     <div class="logout">
-      <button on:click={() => logout(store)}>logout</button>
+      <button on:click={logout}>logout</button>
       <button
         on:click={() => {
           showChat = !showChat;
@@ -108,25 +115,17 @@
           <input
             bind:this={inputRoom}
             value={$store.roomName}
-            on:keyup={(e) => handleFixRoom(e.key)}
+            on:keyup={(e) => handleFixRoom(e.key, $store.roomName)}
             on:input={(e) => handleRoomName(e.target.value)}
             class="input-room"
             placeholder="Room name here..."
             type="text" />
 
-          <div
-            class="mt-6"
-            on:click={() => {
-              console.log('crear');
-            }}>
+          <div on:click={() => createRoom($store.roomName)} class="mt-6">
             <Button>CREATE ROOM!</Button>
           </div>
         {:else}
-          <div
-            class="mt-6"
-            on:click={() => {
-              console.log('start the game!');
-            }}>
+          <div on:click={startGame} class="mt-6">
             <Button>START THE GAME!</Button>
           </div>
 

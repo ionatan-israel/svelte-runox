@@ -1,8 +1,12 @@
 import { Player } from '@runox-game/game-engine/lib/models/player.model';
 import type { IPlayer } from '@runox-game/game-engine/lib/models/player.model';
 import firebase from "../../services/firebase-app";
-import { AppStatus, IStore } from "../../store/types";
+import { AppStatus } from "../../store/types";
 import { store } from '../../store';
+import { FirebaseEngineService } from '../../services/firebase-engine';
+import { from } from 'rxjs';
+
+const firebaseEngineService = new FirebaseEngineService();
 
 export const login = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -24,12 +28,27 @@ export const handleRoomName = (roomName: string) => {
   store.setRoomName(roomName)
 }
 
-export const handleFixRoom = (key: string) => {
+export const handleFixRoom = (key: string, roomName: string) => {
   if (key === 'Enter' || key === 'Escape') {
-    store.setHasRoomNameFixed(true);
+    createRoom(roomName);
   }
 }
 
-export const logout = (store: IStore) => {
+export const logout = () => {
   store.reset();
+}
+
+export const createRoom = (roomName: string) => {
+  store.setHasRoomNameFixed(true);
+  firebaseEngineService.checkRoom(roomName)
+    .subscribe((gameState) => {
+      if (!gameState.exists) {
+        from(firebaseEngineService.createRoom(roomName))
+          .subscribe(() => console.log(`${roomName} creada!`));
+      }
+    });
+}
+
+export const startGame = () => {
+  console.log('startGame edit me!');
 }
